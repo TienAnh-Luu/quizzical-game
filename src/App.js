@@ -39,10 +39,7 @@ export default function App() {
 
   return (
     <main className="app">
-      <IntroPage
-        isRender={page === 0 ? true : false}
-        handleClick={moveToQuestionPage}
-      />
+      {page === 0 && <IntroPage handleClick={moveToQuestionPage} />}
       {data && (
         <QuestionsPage
           isRender={page === -1 || page === 1 ? true : false}
