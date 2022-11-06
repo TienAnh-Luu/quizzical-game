@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from './Question';
+import Question from '../components/Question';
 
 export default function QuestionsPage(props) {
   /**

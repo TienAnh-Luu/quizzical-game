@@ -1,6 +1,6 @@
 import React from 'react';
-import IntroPage from './components/IntroPage';
-import QuestionsPage from './components/QuestionsPage';
+import IntroPage from './pages/IntroPage';
+import QuestionsPage from './pages/QuestionsPage';
 
 export default function App() {
   /* the state that determine which page should be rendered
