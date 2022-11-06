@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from './Question';
+import Question from '../components/Question';
 
 export default function QuestionsPage(props) {
   /**
@@ -18,14 +18,37 @@ export default function QuestionsPage(props) {
    */
   const [quizzes, setQuizzes] = React.useState([]);
 
+  /* the state that hold the questions data
+   * data example:
+   *     [
+   *          {
+   *              category: "Sports",
+   *              type: "multiple",
+   *              difficulty: "medium",
+   *              question: "What national team won the 2016 edition of UEFA European Championship?",
+   *              correct_answer: "Portugal",
+   *              incorrect_answers: ["France", "Germany", "England"]
+   *          }, ...
+   *     ]
+   */
+  const [data, setData] = React.useState([]);
+
+  // This block of code only run when the App start or play again
+  // It takes data from the API, then give them to data state
+  React.useEffect(() => {
+    fetch('https://opentdb.com/api.php?amount=5&category=21&type=multiple')
+      .then((res) => res.json())
+      .then((dat) => setData(dat.results));
+  }, []);
+
   React.useEffect(() => {
     setQuizzes(
-      props.data.map((q) => ({
+      data.map((q) => ({
         question: q.question,
         answers: getShuffleAnswers(q),
       }))
     );
-  }, [props.data]);
+  }, [data]);
 
   function displayStyle(isShow) {
     return { display: isShow ? 'flex' : 'none' };
@@ -100,7 +123,6 @@ export default function QuestionsPage(props) {
     });
 
     setQuizzes(res);
-    console.log(quizzes);
   }
 
   const quizElements = quizzes.map((quiz) => {
@@ -114,7 +136,7 @@ export default function QuestionsPage(props) {
   });
 
   return (
-    <section className="questions-page" style={displayStyle(props.isRender)}>
+    <section className="questions-page" style={{ display: 'flex' }}>
       <div className="quizzes">{quizElements}</div>
       <div className="quiz-result" style={displayStyle(props.showResult)}>
         <h3 className="quiz-score">You scored 3/5 correct answers</h3>

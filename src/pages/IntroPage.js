@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function IntroPage(props) {
   const displayStyle = {
-    display: props.isRender ? 'flex' : 'none',
+    display: 'flex',
   };
 
   return (
