@@ -97,16 +97,14 @@ export default function QuestionsPage(props) {
     setQuizzes(res);
   }
 
-  function handleAnswerClick3(event) {
-    const chosenAns = event.target.dataset.value;
-    const ques = event.target.id;
-
-    const index = quizzes.findIndex((q) => q.question === ques);
+  // leverage Javascript closure: (question, chosenAnsValue) => () => {}
+  const handleAnswerClick3 = (question, chosenAnsValue) => () => {
+    const index = quizzes.findIndex((q) => q.question === question);
 
     const quiz = quizzes[index];
     const newAnswers = quiz.answers.map((ans) => ({
       ...ans,
-      isChosen: ans.value === chosenAns,
+      isChosen: ans.value === chosenAnsValue,
     }));
 
     const newQuizz = { ...quiz, answers: newAnswers };
@@ -116,7 +114,7 @@ export default function QuestionsPage(props) {
       newQuizz,
       ...quizzes.slice(index + 1),
     ]);
-  }
+  };
 
   return (
     <section className="questions-page" style={{ display: 'flex' }}>

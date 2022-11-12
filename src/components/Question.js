@@ -13,10 +13,8 @@ export default function Question({ quiz, handleAnswerClick }) {
           <div
             key={ans.value}
             className="answer"
-            id={quiz.question}
-            data-value={ans.value}
             style={backgroundColorStyle(ans)}
-            onClick={handleAnswerClick}
+            onClick={handleAnswerClick(quiz.question, ans.value)}
           >
             {ans.value}
           </div>
