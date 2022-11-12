@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Question from '../components/Question';
 
 export default function QuestionsPage(props) {
@@ -16,39 +16,8 @@ export default function QuestionsPage(props) {
    *      ]
    * }
    */
+
   const [quizzes, setQuizzes] = React.useState([]);
-
-  /* the state that hold the questions data
-   * data example:
-   *     [
-   *          {
-   *              category: "Sports",
-   *              type: "multiple",
-   *              difficulty: "medium",
-   *              question: "What national team won the 2016 edition of UEFA European Championship?",
-   *              correct_answer: "Portugal",
-   *              incorrect_answers: ["France", "Germany", "England"]
-   *          }, ...
-   *     ]
-   */
-  const [data, setData] = React.useState([]);
-
-  // This block of code only run when the App start or play again
-  // It takes data from the API, then give them to data state
-  React.useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=5&category=21&type=multiple')
-      .then((res) => res.json())
-      .then((dat) => setData(dat.results));
-  }, []);
-
-  React.useEffect(() => {
-    setQuizzes(
-      data.map((q) => ({
-        question: q.question,
-        answers: getShuffleAnswers(q),
-      }))
-    );
-  }, [data]);
 
   function displayStyle(isShow) {
     return { display: isShow ? 'flex' : 'none' };
@@ -75,7 +44,7 @@ export default function QuestionsPage(props) {
     return array;
   }
 
-  function getShuffleAnswers(q) {
+  const getShuffleAnswers = useCallback((q) => {
     let anss = [];
 
     anss = anss.concat(q.incorrect_answers); // take the incorrect answers
@@ -92,7 +61,22 @@ export default function QuestionsPage(props) {
     );
 
     return anss;
-  }
+  }, []);
+
+  // This block of code only run when the App start or play again
+  // It takes data from the API, then give them to data state
+  React.useEffect(() => {
+    fetch('https://opentdb.com/api.php?amount=5&category=21&type=multiple')
+      .then((res) => res.json())
+      .then((dat) => {
+        setQuizzes(
+          dat.results.map((q) => ({
+            question: q.question,
+            answers: getShuffleAnswers(q),
+          }))
+        );
+      });
+  }, [getShuffleAnswers]);
 
   function handleAnswerClick(event) {
     const chosenAns = event.target.dataset.value;
