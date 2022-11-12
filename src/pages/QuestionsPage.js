@@ -78,6 +78,46 @@ export default function QuestionsPage(props) {
     setQuizzes(res);
   }
 
+  // set chosen answer = true, other answers in this questions set to false
+  function handleAnswerClick2(event) {
+    const chosenAns = event.target.dataset.value;
+    const ques = event.target.id;
+
+    const res = quizzes.map((quiz) => {
+      if (quiz.question !== ques) return quiz;
+
+      const newAnswers = quiz.answers.map((ans) => ({
+        ...ans,
+        isChosen: ans.value === chosenAns,
+      }));
+
+      return { ...quiz, answers: newAnswers };
+    });
+
+    setQuizzes(res);
+  }
+
+  function handleAnswerClick3(event) {
+    const chosenAns = event.target.dataset.value;
+    const ques = event.target.id;
+
+    const index = quizzes.findIndex((q) => q.question === ques);
+
+    const quiz = quizzes[index];
+    const newAnswers = quiz.answers.map((ans) => ({
+      ...ans,
+      isChosen: ans.value === chosenAns,
+    }));
+
+    const newQuizz = { ...quiz, answers: newAnswers };
+
+    setQuizzes([
+      ...quizzes.slice(0, index),
+      newQuizz,
+      ...quizzes.slice(index + 1),
+    ]);
+  }
+
   return (
     <section className="questions-page" style={{ display: 'flex' }}>
       <div className="quizzes">
@@ -85,7 +125,7 @@ export default function QuestionsPage(props) {
           <Question
             key={quiz.question}
             quiz={quiz}
-            handleAnswerClick={handleAnswerClick}
+            handleAnswerClick={handleAnswerClick3}
           />
         ))}
       </div>
