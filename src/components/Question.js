@@ -1,32 +1,24 @@
 import React from 'react';
 
-export default function Question(props) {
-  // this state is only used for rerender purpose
-  // (don't care about the value, when it change, the component is rerendered)
-  const [rerender, setRerender] = React.useState(false);
-
+export default function Question({ quiz, handleAnswerClick }) {
   const backgroundColorStyle = (answer) => ({
     backgroundColor: answer.isChosen ? '#D6DBF5' : 'unset',
   });
 
   return (
     <div className="quiz">
-      <p className="question">{props.quiz.question}</p>
+      <p className="question">{quiz.question}</p>
       <div className="answers">
-        {props.quiz.answers.map((ans) => {
-          return (
-            <div
-              className="answer"
-              id={props.quiz.question}
-              data-value={ans.value}
-              key={ans.value}
-              style={backgroundColorStyle(ans)}
-              onClick={props.handleAnswerClick}
-            >
-              {ans.value}
-            </div>
-          );
-        })}
+        {quiz.answers.map((ans) => (
+          <div
+            key={ans.value}
+            className="answer"
+            style={backgroundColorStyle(ans)}
+            onClick={handleAnswerClick(quiz.question, ans.value)}
+          >
+            {ans.value}
+          </div>
+        ))}
       </div>
     </div>
   );

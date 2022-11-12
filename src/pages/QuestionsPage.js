@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Question from '../components/Question';
+import { shuffle } from '../utils/arrayHelpers';
 
 export default function QuestionsPage(props) {
   /**
@@ -16,83 +17,35 @@ export default function QuestionsPage(props) {
    *      ]
    * }
    */
+
   const [quizzes, setQuizzes] = React.useState([]);
 
-  /* the state that hold the questions data
-   * data example:
-   *     [
-   *          {
-   *              category: "Sports",
-   *              type: "multiple",
-   *              difficulty: "medium",
-   *              question: "What national team won the 2016 edition of UEFA European Championship?",
-   *              correct_answer: "Portugal",
-   *              incorrect_answers: ["France", "Germany", "England"]
-   *          }, ...
-   *     ]
-   */
-  const [data, setData] = React.useState([]);
+  const getShuffleAnswers = useCallback((q) => {
+    const anss = [...q.incorrect_answers, q.correct_answer];
+
+    const mappedAnss = anss.map((ans) => ({
+      value: ans,
+      isChosen: false,
+      isCorrect: q.correct_answer === ans,
+    }));
+
+    return shuffle(mappedAnss);
+  }, []);
 
   // This block of code only run when the App start or play again
   // It takes data from the API, then give them to data state
   React.useEffect(() => {
     fetch('https://opentdb.com/api.php?amount=5&category=21&type=multiple')
       .then((res) => res.json())
-      .then((dat) => setData(dat.results));
-  }, []);
-
-  React.useEffect(() => {
-    setQuizzes(
-      data.map((q) => ({
-        question: q.question,
-        answers: getShuffleAnswers(q),
-      }))
-    );
-  }, [data]);
-
-  function displayStyle(isShow) {
-    return { display: isShow ? 'flex' : 'none' };
-  }
-
-  // This func randomly reaarange the array
-  function shuffle(array) {
-    let currentIndex = array.length,
-      randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
-    }
-
-    return array;
-  }
-
-  function getShuffleAnswers(q) {
-    let anss = [];
-
-    anss = anss.concat(q.incorrect_answers); // take the incorrect answers
-    anss.push(q.correct_answer); // take the correct answer
-
-    // turn answer to object that contain more information
-    // then shuffle the array of answers
-    anss = shuffle(
-      anss.map((ans) => ({
-        value: ans,
-        isChosen: false,
-        isCorrect: q.correct_answer === ans,
-      }))
-    );
-
-    return anss;
-  }
+      .then((dat) => {
+        setQuizzes(
+          dat.results.map((q) => ({
+            question: q.question,
+            answers: getShuffleAnswers(q),
+          }))
+        );
+      });
+  }, [getShuffleAnswers]);
 
   function handleAnswerClick(event) {
     const chosenAns = event.target.dataset.value;
@@ -125,26 +78,63 @@ export default function QuestionsPage(props) {
     setQuizzes(res);
   }
 
-  const quizElements = quizzes.map((quiz) => {
-    return (
-      <Question
-        key={quiz.question}
-        quiz={quiz}
-        handleAnswerClick={(event) => handleAnswerClick(event)}
-      />
-    );
-  });
+  // set chosen answer = true, other answers in this questions set to false
+  function handleAnswerClick2(event) {
+    const chosenAns = event.target.dataset.value;
+    const ques = event.target.id;
+
+    const res = quizzes.map((quiz) => {
+      if (quiz.question !== ques) return quiz;
+
+      const newAnswers = quiz.answers.map((ans) => ({
+        ...ans,
+        isChosen: ans.value === chosenAns,
+      }));
+
+      return { ...quiz, answers: newAnswers };
+    });
+
+    setQuizzes(res);
+  }
+
+  // leverage Javascript closure: (question, chosenAnsValue) => () => {}
+  const handleAnswerClick3 = (question, chosenAnsValue) => () => {
+    const index = quizzes.findIndex((q) => q.question === question);
+
+    const quiz = quizzes[index];
+    const newAnswers = quiz.answers.map((ans) => ({
+      ...ans,
+      isChosen: ans.value === chosenAnsValue,
+    }));
+
+    const newQuizz = { ...quiz, answers: newAnswers };
+
+    setQuizzes([
+      ...quizzes.slice(0, index),
+      newQuizz,
+      ...quizzes.slice(index + 1),
+    ]);
+  };
 
   return (
     <section className="questions-page" style={{ display: 'flex' }}>
-      <div className="quizzes">{quizElements}</div>
-      <div className="quiz-result" style={displayStyle(props.showResult)}>
-        <h3 className="quiz-score">You scored 3/5 correct answers</h3>
-        <button className="quiz-playAgainBtn">Play again</button>
+      <div className="quizzes">
+        {quizzes.map((quiz) => (
+          <Question
+            key={quiz.question}
+            quiz={quiz}
+            handleAnswerClick={handleAnswerClick3}
+          />
+        ))}
       </div>
-      <button className="quiz-btn" style={displayStyle(!props.showResult)}>
-        Check answers
-      </button>
+      {props.showResult ? (
+        <div className="quiz-result">
+          <h3 className="quiz-score">You scored 3/5 correct answers</h3>
+          <button className="quiz-playAgainBtn">Play again</button>
+        </div>
+      ) : (
+        <button className="quiz-btn">Check answers</button>
+      )}
     </section>
   );
 }
