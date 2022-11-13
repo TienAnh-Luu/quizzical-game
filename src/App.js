@@ -1,25 +1,17 @@
 import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import IntroPage from './pages/IntroPage';
 import QuestionsPage from './pages/QuestionsPage';
 
 export default function App() {
-  /* the state that determine which page should be rendered
-   * -1: questions page
-   *  0: intro page
-   *  1: answer page (it's still question page, but the answer is declared)
-   */
-  const [page, setPage] = React.useState(0);
-
-  function moveToQuestionPage() {
-    setPage(-1);
-  }
-
   return (
     <main className="app">
-      {page === 0 && <IntroPage handleClick={moveToQuestionPage} />}
-      {page !== 0 && (
-        <QuestionsPage handlePlayAgainClick={moveToQuestionPage} />
-      )}
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<IntroPage />} />
+          <Route path='/questions' element={<QuestionsPage />} />
+        </Routes>
+      </BrowserRouter>
 
       <img src="../images/blobsTop.png" alt="blobs" className="blobsTop" />
       <img

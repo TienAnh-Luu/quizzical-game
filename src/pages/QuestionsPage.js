@@ -33,7 +33,7 @@ export default function QuestionsPage(props) {
   }, []);
 
   // This block of code only run when the App start or play again
-  // It takes data from the API, then give them to data state
+  // It takes data from the API, then give them to quizzes state
   React.useEffect(() => {
     fetch('https://opentdb.com/api.php?amount=5&category=21&type=multiple')
       .then((res) => res.json())
@@ -107,11 +107,11 @@ export default function QuestionsPage(props) {
       isChosen: ans.value === chosenAnsValue,
     }));
 
-    const newQuizz = { ...quiz, answers: newAnswers };
+    const newQuiz = { ...quiz, answers: newAnswers };
 
     setQuizzes([
       ...quizzes.slice(0, index),
-      newQuizz,
+      newQuiz,
       ...quizzes.slice(index + 1),
     ]);
   };
