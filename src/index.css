@@ -121,7 +121,7 @@ body {
 .answers {
   display: flex;
 }
-
+/* 
 .answer {
   display: flex;
   justify-content: center;
@@ -138,7 +138,7 @@ body {
 .answer:hover {
   border: none;
   background-color: #d6dbf5 !important;
-}
+} */
 
 .answer:active {
   background-color: #a3aee6;
