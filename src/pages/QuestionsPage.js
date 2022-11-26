@@ -19,6 +19,7 @@ export default function QuestionsPage(props) {
    */
 
   const [quizzes, setQuizzes] = React.useState([]);
+  const [isSubmit, setIsSubmit] = React.useState(false);
 
   const getShuffleAnswers = useCallback((q) => {
     const anss = [...q.incorrect_answers, q.correct_answer];
@@ -47,56 +48,7 @@ export default function QuestionsPage(props) {
       });
   }, [getShuffleAnswers]);
 
-  function handleAnswerClick(event) {
-    const chosenAns = event.target.dataset.value;
-    const ques = event.target.id;
-
-    let res = [...quizzes];
-
-    res = res.map((quiz) => {
-      if (quiz.question === ques) {
-        let newAnswers = quiz.answers.map((ans) => {
-          // todo: fix this
-          if (ans.value === chosenAns && ans.isChosen === false) {
-            // console.log(true)
-            return { ...ans, isChosen: true };
-          } else if (ans.value !== chosenAns && ans.isChosen === true) {
-            // console.log(false)
-            return { ...ans, isChosen: false };
-          }
-
-          // console.log("normal")
-          return ans;
-        });
-
-        return { ...quiz, answers: newAnswers };
-      } else {
-        return quiz;
-      }
-    });
-
-    setQuizzes(res);
-  }
-
-  // set chosen answer = true, other answers in this questions set to false
-  function handleAnswerClick2(event) {
-    const chosenAns = event.target.dataset.value;
-    const ques = event.target.id;
-
-    const res = quizzes.map((quiz) => {
-      if (quiz.question !== ques) return quiz;
-
-      const newAnswers = quiz.answers.map((ans) => ({
-        ...ans,
-        isChosen: ans.value === chosenAns,
-      }));
-
-      return { ...quiz, answers: newAnswers };
-    });
-
-    setQuizzes(res);
-  }
-
+  
   // leverage Javascript closure: (question, chosenAnsValue) => () => {}
   const handleAnswerClick3 = (question, chosenAnsValue) => () => {
     const index = quizzes.findIndex((q) => q.question === question);
@@ -116,6 +68,34 @@ export default function QuestionsPage(props) {
     ]);
   };
 
+  const handleAnswerHover = (event) => {
+    // if (!isSubmit) {
+    //   event.target.style.backgroundColor = "#d6dbf5"
+    //   event.target.style.border = "none"
+    // }
+  }
+
+  const countCorrectAnswers = () => {
+    let count = 0
+    const qzs = [...quizzes]
+
+    qzs.map(quiz => {
+      quiz.answers.map(ans => {
+        if (ans.isChosen && ans.isCorrect) {
+          count++
+        }
+        return ans
+      })
+      return quiz
+    })
+
+    return count
+  }
+
+  const handleSubmit = () => {
+    setIsSubmit(oldIsSubmit => !oldIsSubmit)
+  }
+
   return (
     <section className="questions-page" style={{ display: 'flex' }}>
       <div className="quizzes">
@@ -124,16 +104,18 @@ export default function QuestionsPage(props) {
             key={quiz.question}
             quiz={quiz}
             handleAnswerClick={handleAnswerClick3}
+            handleAnswerHover={handleAnswerHover}
+            isSubmit={isSubmit}
           />
         ))}
       </div>
-      {props.showResult ? (
+      {isSubmit ? (
         <div className="quiz-result">
-          <h3 className="quiz-score">You scored 3/5 correct answers</h3>
-          <button className="quiz-playAgainBtn">Play again</button>
+          <h3 className="quiz-score">You scored {countCorrectAnswers()}/{quizzes.length} correct answers</h3>
+          {/* <button className="quiz-playAgainBtn">Play again</button> */}
         </div>
       ) : (
-        <button className="quiz-btn">Check answers</button>
+        <button className="quiz-btn" onClick={handleSubmit}>Check answers</button>
       )}
     </section>
   );
