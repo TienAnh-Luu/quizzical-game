@@ -137,7 +137,7 @@ body {
 
 .answer:hover {
   border: none;
-  background-color: #d6dbf5;
+  background-color: #d6dbf5 !important;
 }
 
 .answer:active {
