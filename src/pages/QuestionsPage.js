@@ -2,6 +2,42 @@ import React, { useCallback } from 'react';
 import Question from '../components/Question';
 import { shuffle } from '../utils/arrayHelpers';
 
+
+
+const answerStyle = (answer, isSubmit) => {
+    
+  let bgc = ""
+  let border = '0.8px solid #4d5b9e'
+  if (!isSubmit && answer.isChosen) { // haven't been submitted yet and this ans is chosen
+    bgc = "#d6dbf5"
+    border = "none"
+  } else if (!isSubmit && !answer.isChosen) { // haven't been submitted yet and this ans isn't chosen
+    bgc = "unset"
+  } else if (isSubmit && answer.isCorrect) { // have been submitted and this ans is correct
+    bgc = "#94d7a2"
+    border = "none"
+  } else if (isSubmit && !answer.isCorrect && answer.isChosen) { // have been submitted and this ans is incorrect and it is chosen
+    bgc = "#f8bcbc"
+    border = "none"
+  } else if (isSubmit && !answer.isCorrect && !answer.isChosen) { // have been submitted and this ans is incorrect and it isn't chosen
+    bgc = "unset"
+  }
+
+  return {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    boxSizing: 'border-box',
+    border: border,
+    borderRadius: '8px',
+    marginRight: '13px',
+    padding: '4px 16px',
+    backgroundColor: bgc,
+    cursor: isSubmit? 'default' : 'pointer',
+    transition: 'border 0.15s, background-color 0.15s'
+  }
+};
+
 export default function QuestionsPage(props) {
   /**
    * This is how quizzes state looks like:
@@ -68,11 +104,24 @@ export default function QuestionsPage(props) {
     ]);
   };
 
-  const handleAnswerHover = (event) => {
-    // if (!isSubmit) {
-    //   event.target.style.backgroundColor = "#d6dbf5"
-    //   event.target.style.border = "none"
-    // }
+  const handleAnswerMouseEnter = (event) => {
+    if (!isSubmit) {
+      event.target.style.backgroundColor = "#d6dbf5"
+      event.target.style.border = "none"
+    }
+  }
+
+  const handleAnswerMouseLeave = (event, answer) => {
+    if (!isSubmit) {
+      if (answer.isChosen) {
+        event.target.style.backgroundColor = "#d6dbf5"
+        event.target.style.border = "none"
+      }
+      else {
+        event.target.style.backgroundColor = "unset"
+        event.target.style.border = "0.8px solid #4d5b9e"
+      }
+    }
   }
 
   const countCorrectAnswers = () => {
@@ -103,8 +152,10 @@ export default function QuestionsPage(props) {
           <Question
             key={quiz.question}
             quiz={quiz}
+            answerStyle={(answer, isSubmit) => answerStyle(answer, isSubmit)}
             handleAnswerClick={handleAnswerClick3}
-            handleAnswerHover={handleAnswerHover}
+            handleAnswerMouseEnter={handleAnswerMouseEnter}
+            handleAnswerMouseLeave={(event, answer) => handleAnswerMouseLeave(event, answer)}
             isSubmit={isSubmit}
           />
         ))}
@@ -120,3 +171,10 @@ export default function QuestionsPage(props) {
     </section>
   );
 }
+
+/**TODO: 
+ * - fix hover error (background color and border and cursor) => DONE
+ * - fix reload error (setIsSubmit)
+ * - add warning of not solving all quizzes
+ * - show and handle play again button
+ */
