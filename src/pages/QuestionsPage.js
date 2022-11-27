@@ -8,18 +8,18 @@ const answerStyle = (answer, isSubmit) => {
     
   let bgc = ""
   let border = '0.8px solid #4d5b9e'
-  if (!isSubmit && answer.isChosen) { // haven't been submitted yet and this ans is chosen
+  if (isSubmit !== 1 && answer.isChosen) { // haven't been submitted yet and this ans is chosen
     bgc = "#d6dbf5"
     border = "none"
-  } else if (!isSubmit && !answer.isChosen) { // haven't been submitted yet and this ans isn't chosen
+  } else if (isSubmit !== 1 && !answer.isChosen) { // haven't been submitted yet and this ans isn't chosen
     bgc = "unset"
-  } else if (isSubmit && answer.isCorrect) { // have been submitted and this ans is correct
+  } else if (isSubmit === 1 && answer.isCorrect) { // have been submitted and this ans is correct
     bgc = "#94d7a2"
     border = "none"
-  } else if (isSubmit && !answer.isCorrect && answer.isChosen) { // have been submitted and this ans is incorrect and it is chosen
+  } else if (isSubmit === 1 && !answer.isCorrect && answer.isChosen) { // have been submitted and this ans is incorrect and it is chosen
     bgc = "#f8bcbc"
     border = "none"
-  } else if (isSubmit && !answer.isCorrect && !answer.isChosen) { // have been submitted and this ans is incorrect and it isn't chosen
+  } else if (isSubmit === 1 && !answer.isCorrect && !answer.isChosen) { // have been submitted and this ans is incorrect and it isn't chosen
     bgc = "unset"
   }
 
@@ -33,7 +33,7 @@ const answerStyle = (answer, isSubmit) => {
     marginRight: '13px',
     padding: '4px 16px',
     backgroundColor: bgc,
-    cursor: isSubmit? 'default' : 'pointer',
+    cursor: isSubmit === 1? 'default' : 'pointer',
     transition: 'border 0.15s, background-color 0.15s'
   }
 };
@@ -53,9 +53,16 @@ export default function QuestionsPage(props) {
    *      ]
    * }
    */
-
   const [quizzes, setQuizzes] = React.useState([]);
-  const [isSubmit, setIsSubmit] = React.useState(false);
+
+  /**
+   * -1: press submit button when the form haven't been completed yet
+   *  0: in progress
+   *  1: submitted
+   */
+  const [isSubmit, setIsSubmit] = React.useState(0);
+
+
 
   const getShuffleAnswers = useCallback((q) => {
     const anss = [...q.incorrect_answers, q.correct_answer];
@@ -105,14 +112,14 @@ export default function QuestionsPage(props) {
   };
 
   const handleAnswerMouseEnter = (event) => {
-    if (!isSubmit) {
+    if (isSubmit !== 1) {
       event.target.style.backgroundColor = "#d6dbf5"
       event.target.style.border = "none"
     }
   }
 
   const handleAnswerMouseLeave = (event, answer) => {
-    if (!isSubmit) {
+    if (isSubmit !== 1) {
       if (answer.isChosen) {
         event.target.style.backgroundColor = "#d6dbf5"
         event.target.style.border = "none"
@@ -122,6 +129,23 @@ export default function QuestionsPage(props) {
         event.target.style.border = "0.8px solid #4d5b9e"
       }
     }
+  }
+
+  const countQuizSolved = () => {
+    let count  = 0;
+    const qzs = [...quizzes]
+
+    qzs.map(quiz => {
+      quiz.answers.map(ans => {
+        if (ans.isChosen) {
+          count++
+        }
+        return ans
+      })
+      return quiz
+    })
+
+    return count
   }
 
   const countCorrectAnswers = () => {
@@ -142,7 +166,12 @@ export default function QuestionsPage(props) {
   }
 
   const handleSubmit = () => {
-    setIsSubmit(oldIsSubmit => !oldIsSubmit)
+    if (countQuizSolved() < quizzes.length) {
+      setIsSubmit(-1)
+    }
+    else {
+      setIsSubmit(1)
+    }
   }
 
   return (
@@ -160,21 +189,23 @@ export default function QuestionsPage(props) {
           />
         ))}
       </div>
-      {isSubmit ? (
-        <div className="quiz-result">
-          <h3 className="quiz-score">You scored {countCorrectAnswers()}/{quizzes.length} correct answers</h3>
-          {/* <button className="quiz-playAgainBtn">Play again</button> */}
-        </div>
-      ) : (
-        <button className="quiz-btn" onClick={handleSubmit}>Check answers</button>
-      )}
+      {isSubmit !== 0 ?
+        (<div className="quiz-result">
+          {isSubmit === -1 ?
+            (<h3 className='quiz-warning'>Complete all quizzes to see the result!!!</h3>)
+            : 
+            (<h3 className="quiz-score">You scored {countCorrectAnswers()}/{quizzes.length} correct answers</h3>)
+          }
+          <button className="quiz-playAgainBtn">Play again</button>
+        </div>) 
+        : 
+        (<button className="quiz-btn" onClick={handleSubmit}>Check answers</button>)
+      }
     </section>
   );
 }
 
 /**TODO: 
- * - fix hover error (background color and border and cursor) => DONE
  * - fix reload error (setIsSubmit)
- * - add warning of not solving all quizzes
  * - show and handle play again button
  */

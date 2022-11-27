@@ -1,4 +1,3 @@
-import { hover } from '@testing-library/user-event/dist/hover';
 import React from 'react';
 
 export default function Question({ quiz, answerStyle, handleAnswerClick, handleAnswerMouseEnter, handleAnswerMouseLeave, isSubmit }) {
