@@ -171,8 +171,9 @@ body {
   transition: background-color 0.15s;
 }
 
-.quiz-playAgainBtn {
-  margin-top: 15px;
+.quiz-warning, 
+.quiz-score {
+  margin-bottom: 15px;
 }
 
 .quiz-btn:hover,
@@ -181,7 +182,7 @@ body {
 }
 
 .quiz-warning {
-  color: #ff9966;
+  color: #ff0000;
   font-style: italic;
   font-weight: 700;
   font-size: 16px;

@@ -38,7 +38,7 @@ const answerStyle = (answer, isSubmit) => {
   }
 };
 
-export default function QuestionsPage(props) {
+export default function QuestionsPage() {
   /**
    * This is how quizzes state looks like:
    * {
@@ -174,6 +174,10 @@ export default function QuestionsPage(props) {
     }
   }
 
+  const handlePlayAgain = () => {
+    window.location.reload()
+  }
+
   return (
     <section className="questions-page" style={{ display: 'flex' }}>
       <div className="quizzes">
@@ -189,23 +193,17 @@ export default function QuestionsPage(props) {
           />
         ))}
       </div>
-      {isSubmit !== 0 ?
-        (<div className="quiz-result">
-          {isSubmit === -1 ?
-            (<h3 className='quiz-warning'>Complete all quizzes to see the result!!!</h3>)
-            : 
-            (<h3 className="quiz-score">You scored {countCorrectAnswers()}/{quizzes.length} correct answers</h3>)
-          }
-          <button className="quiz-playAgainBtn">Play again</button>
-        </div>) 
-        : 
-        (<button className="quiz-btn" onClick={handleSubmit}>Check answers</button>)
-      }
+      {isSubmit === 1 &&
+        <div className="quiz-result">
+          <h3 className="quiz-score">You scored {countCorrectAnswers()}/{quizzes.length} correct answers</h3>
+          <button className="quiz-playAgainBtn" onClick={handlePlayAgain}>Play again</button>
+        </div>}
+      {isSubmit === -1 && <h3 className='quiz-warning'>Complete all quizzes to see the result!!!</h3>}
+      {isSubmit !== 1 && <button className="quiz-btn" onClick={handleSubmit}>Check answers</button>}
     </section>
   );
 }
 
 /**TODO: 
- * - fix reload error (setIsSubmit)
- * - show and handle play again button
+ * - fix re-render twice when loading the page
  */
