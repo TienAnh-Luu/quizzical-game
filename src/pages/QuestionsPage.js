@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+
 import Question from '../components/Question';
 import { shuffle } from '../utils/arrayHelpers';
 
@@ -6,44 +7,6 @@ const FORM_STATE = {
   IN_PROGRESS: 0,
   NOT_COMPLETE: -1,
   SUBMITTED: 1,
-};
-
-const answerStyle = (answer, isSubmit) => {
-  let bgc = '';
-  let border = '0.8px solid #4d5b9e';
-  if (isSubmit !== 1 && answer.isChosen) {
-    // haven't been submitted yet and this ans is chosen
-    bgc = '#d6dbf5';
-    border = 'none';
-  } else if (isSubmit !== 1 && !answer.isChosen) {
-    // haven't been submitted yet and this ans isn't chosen
-    bgc = 'unset';
-  } else if (isSubmit === 1 && answer.isCorrect) {
-    // have been submitted and this ans is correct
-    bgc = '#94d7a2';
-    border = 'none';
-  } else if (isSubmit === 1 && !answer.isCorrect && answer.isChosen) {
-    // have been submitted and this ans is incorrect and it is chosen
-    bgc = '#f8bcbc';
-    border = 'none';
-  } else if (isSubmit === 1 && !answer.isCorrect && !answer.isChosen) {
-    // have been submitted and this ans is incorrect and it isn't chosen
-    bgc = 'unset';
-  }
-
-  return {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxSizing: 'border-box',
-    border: border,
-    borderRadius: '8px',
-    marginRight: '13px',
-    padding: '4px 16px',
-    backgroundColor: bgc,
-    cursor: isSubmit === 1 ? 'default' : 'pointer',
-    transition: 'border 0.15s, background-color 0.15s',
-  };
 };
 
 export default function QuestionsPage() {
@@ -63,12 +26,6 @@ export default function QuestionsPage() {
    */
   const [quizzes, setQuizzes] = React.useState([]);
 
-  /**
-   * -1: press submit button when the form haven't been completed yet
-   *  0: in progress
-   *  1: submitted
-   */
-  const [isSubmit, setIsSubmit] = React.useState(0);
   const [formState, setFormState] = React.useState(FORM_STATE.IN_PROGRESS);
   const [noCorrectAnswers, setNoCorrectAnswers] = React.useState(0);
 
@@ -118,25 +75,6 @@ export default function QuestionsPage() {
     ]);
   };
 
-  const handleAnswerMouseEnter = (event) => {
-    if (isSubmit !== 1) {
-      event.target.style.backgroundColor = '#d6dbf5';
-      event.target.style.border = 'none';
-    }
-  };
-
-  const handleAnswerMouseLeave = (event, answer) => {
-    if (isSubmit !== 1) {
-      if (answer.isChosen) {
-        event.target.style.backgroundColor = '#d6dbf5';
-        event.target.style.border = 'none';
-      } else {
-        event.target.style.backgroundColor = 'unset';
-        event.target.style.border = '0.8px solid #4d5b9e';
-      }
-    }
-  };
-
   const countQuizSolved = () => {
     let count = 0;
     const qzs = [...quizzes];
@@ -173,10 +111,8 @@ export default function QuestionsPage() {
 
   const handleSubmit = () => {
     if (countQuizSolved() < quizzes.length) {
-      setIsSubmit(-1);
       setFormState(FORM_STATE.NOT_COMPLETE);
     } else {
-      setIsSubmit(1);
       setFormState(FORM_STATE.SUBMITTED);
       setNoCorrectAnswers(countCorrectAnswers());
     }
@@ -193,13 +129,8 @@ export default function QuestionsPage() {
           <Question
             key={quiz.question}
             quiz={quiz}
-            answerStyle={(answer, isSubmit) => answerStyle(answer, isSubmit)}
             handleAnswerClick={handleAnswerClick3}
-            handleAnswerMouseEnter={handleAnswerMouseEnter}
-            handleAnswerMouseLeave={(event, answer) =>
-              handleAnswerMouseLeave(event, answer)
-            }
-            isSubmit={isSubmit}
+            isSubmit={formState === FORM_STATE.SUBMITTED}
           />
         ))}
       </div>
