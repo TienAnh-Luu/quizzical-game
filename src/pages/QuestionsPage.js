@@ -58,6 +58,8 @@ export default function QuestionsPage() {
 
   // leverage Javascript closure: (question, chosenAnsValue) => () => {}
   const handleAnswerClick3 = (question, chosenAnsValue) => () => {
+    if (formState === FORM_STATE.SUBMITTED) return;
+
     const index = quizzes.findIndex((q) => q.question === question);
 
     const quiz = quizzes[index];
