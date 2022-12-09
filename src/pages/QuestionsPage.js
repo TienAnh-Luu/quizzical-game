@@ -2,40 +2,42 @@ import React, { useCallback } from 'react';
 import Question from '../components/Question';
 import { shuffle } from '../utils/arrayHelpers';
 
-
-
 const answerStyle = (answer, isSubmit) => {
-    
-  let bgc = ""
-  let border = '0.8px solid #4d5b9e'
-  if (isSubmit !== 1 && answer.isChosen) { // haven't been submitted yet and this ans is chosen
-    bgc = "#d6dbf5"
-    border = "none"
-  } else if (isSubmit !== 1 && !answer.isChosen) { // haven't been submitted yet and this ans isn't chosen
-    bgc = "unset"
-  } else if (isSubmit === 1 && answer.isCorrect) { // have been submitted and this ans is correct
-    bgc = "#94d7a2"
-    border = "none"
-  } else if (isSubmit === 1 && !answer.isCorrect && answer.isChosen) { // have been submitted and this ans is incorrect and it is chosen
-    bgc = "#f8bcbc"
-    border = "none"
-  } else if (isSubmit === 1 && !answer.isCorrect && !answer.isChosen) { // have been submitted and this ans is incorrect and it isn't chosen
-    bgc = "unset"
+  let bgc = '';
+  let border = '0.8px solid #4d5b9e';
+  if (isSubmit !== 1 && answer.isChosen) {
+    // haven't been submitted yet and this ans is chosen
+    bgc = '#d6dbf5';
+    border = 'none';
+  } else if (isSubmit !== 1 && !answer.isChosen) {
+    // haven't been submitted yet and this ans isn't chosen
+    bgc = 'unset';
+  } else if (isSubmit === 1 && answer.isCorrect) {
+    // have been submitted and this ans is correct
+    bgc = '#94d7a2';
+    border = 'none';
+  } else if (isSubmit === 1 && !answer.isCorrect && answer.isChosen) {
+    // have been submitted and this ans is incorrect and it is chosen
+    bgc = '#f8bcbc';
+    border = 'none';
+  } else if (isSubmit === 1 && !answer.isCorrect && !answer.isChosen) {
+    // have been submitted and this ans is incorrect and it isn't chosen
+    bgc = 'unset';
   }
 
   return {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     boxSizing: 'border-box',
     border: border,
     borderRadius: '8px',
     marginRight: '13px',
     padding: '4px 16px',
     backgroundColor: bgc,
-    cursor: isSubmit === 1? 'default' : 'pointer',
-    transition: 'border 0.15s, background-color 0.15s'
-  }
+    cursor: isSubmit === 1 ? 'default' : 'pointer',
+    transition: 'border 0.15s, background-color 0.15s',
+  };
 };
 
 export default function QuestionsPage() {
@@ -61,8 +63,6 @@ export default function QuestionsPage() {
    *  1: submitted
    */
   const [isSubmit, setIsSubmit] = React.useState(0);
-
-
 
   const getShuffleAnswers = useCallback((q) => {
     const anss = [...q.incorrect_answers, q.correct_answer];
@@ -91,7 +91,6 @@ export default function QuestionsPage() {
       });
   }, [getShuffleAnswers]);
 
-  
   // leverage Javascript closure: (question, chosenAnsValue) => () => {}
   const handleAnswerClick3 = (question, chosenAnsValue) => () => {
     const index = quizzes.findIndex((q) => q.question === question);
@@ -113,70 +112,68 @@ export default function QuestionsPage() {
 
   const handleAnswerMouseEnter = (event) => {
     if (isSubmit !== 1) {
-      event.target.style.backgroundColor = "#d6dbf5"
-      event.target.style.border = "none"
+      event.target.style.backgroundColor = '#d6dbf5';
+      event.target.style.border = 'none';
     }
-  }
+  };
 
   const handleAnswerMouseLeave = (event, answer) => {
     if (isSubmit !== 1) {
       if (answer.isChosen) {
-        event.target.style.backgroundColor = "#d6dbf5"
-        event.target.style.border = "none"
-      }
-      else {
-        event.target.style.backgroundColor = "unset"
-        event.target.style.border = "0.8px solid #4d5b9e"
+        event.target.style.backgroundColor = '#d6dbf5';
+        event.target.style.border = 'none';
+      } else {
+        event.target.style.backgroundColor = 'unset';
+        event.target.style.border = '0.8px solid #4d5b9e';
       }
     }
-  }
+  };
 
   const countQuizSolved = () => {
-    let count  = 0;
-    const qzs = [...quizzes]
+    let count = 0;
+    const qzs = [...quizzes];
 
-    qzs.map(quiz => {
-      quiz.answers.map(ans => {
+    qzs.map((quiz) => {
+      quiz.answers.map((ans) => {
         if (ans.isChosen) {
-          count++
+          count++;
         }
-        return ans
-      })
-      return quiz
-    })
+        return ans;
+      });
+      return quiz;
+    });
 
-    return count
-  }
+    return count;
+  };
 
   const countCorrectAnswers = () => {
-    let count = 0
-    const qzs = [...quizzes]
+    let count = 0;
+    const qzs = [...quizzes];
 
-    qzs.map(quiz => {
-      quiz.answers.map(ans => {
+    qzs.map((quiz) => {
+      quiz.answers.map((ans) => {
         if (ans.isChosen && ans.isCorrect) {
-          count++
+          count++;
         }
-        return ans
-      })
-      return quiz
-    })
+        return ans;
+      });
+      return quiz;
+    });
 
-    return count
-  }
+    return count;
+  };
 
   const handleSubmit = () => {
     if (countQuizSolved() < quizzes.length) {
-      setIsSubmit(-1)
+      setIsSubmit(-1);
+    } else {
+      setIsSubmit(1);
     }
-    else {
-      setIsSubmit(1)
-    }
-  }
+  };
 
   const handlePlayAgain = () => {
-    window.location.reload()
-  }
+    window.location.reload();
+  };
 
   return (
     <section className="questions-page" style={{ display: 'flex' }}>
@@ -188,22 +185,37 @@ export default function QuestionsPage() {
             answerStyle={(answer, isSubmit) => answerStyle(answer, isSubmit)}
             handleAnswerClick={handleAnswerClick3}
             handleAnswerMouseEnter={handleAnswerMouseEnter}
-            handleAnswerMouseLeave={(event, answer) => handleAnswerMouseLeave(event, answer)}
+            handleAnswerMouseLeave={(event, answer) =>
+              handleAnswerMouseLeave(event, answer)
+            }
             isSubmit={isSubmit}
           />
         ))}
       </div>
-      {isSubmit === 1 &&
+      {isSubmit === 1 && (
         <div className="quiz-result">
-          <h3 className="quiz-score">You scored {countCorrectAnswers()}/{quizzes.length} correct answers</h3>
-          <button className="quiz-playAgainBtn" onClick={handlePlayAgain}>Play again</button>
-        </div>}
-      {isSubmit === -1 && <h3 className='quiz-warning'>Complete all quizzes to see the result!!!</h3>}
-      {isSubmit !== 1 && <button className="quiz-btn" onClick={handleSubmit}>Check answers</button>}
+          <h3 className="quiz-score">
+            You scored {countCorrectAnswers()}/{quizzes.length} correct answers
+          </h3>
+          <button className="quiz-playAgainBtn" onClick={handlePlayAgain}>
+            Play again
+          </button>
+        </div>
+      )}
+      {isSubmit === -1 && (
+        <h3 className="quiz-warning">
+          Complete all quizzes to see the result!!!
+        </h3>
+      )}
+      {isSubmit !== 1 && (
+        <button className="quiz-btn" onClick={handleSubmit}>
+          Check answers
+        </button>
+      )}
     </section>
   );
 }
 
-/**TODO: 
+/**TODO:
  * - fix re-render twice when loading the page
  */
