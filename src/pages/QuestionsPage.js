@@ -4,7 +4,7 @@ import Question from '../components/Question';
 import { shuffle } from '../utils/arrayHelpers';
 
 const FORM_STATE = {
-  IN_PROGRESS: 0,
+  INITIAL: 0,
   NOT_COMPLETE: -1,
   SUBMITTED: 1,
 };
@@ -26,7 +26,7 @@ export default function QuestionsPage() {
    */
   const [quizzes, setQuizzes] = React.useState([]);
 
-  const [formState, setFormState] = React.useState(FORM_STATE.IN_PROGRESS);
+  const [formState, setFormState] = React.useState(FORM_STATE.INITIAL);
   const [noCorrectAnswers, setNoCorrectAnswers] = React.useState(0);
 
   const getShuffleAnswers = useCallback((q) => {
@@ -81,6 +81,11 @@ export default function QuestionsPage() {
     let count = 0;
     const qzs = [...quizzes];
 
+    // NOTE: get rid of map
+    // Option 1: Array.reduce
+    // Option 2: Array.filter => length
+    // Option 3: Array.forEach
+
     qzs.map((quiz) => {
       quiz.answers.map((ans) => {
         if (ans.isChosen) {
@@ -97,6 +102,11 @@ export default function QuestionsPage() {
   const countCorrectAnswers = () => {
     let count = 0;
     const qzs = [...quizzes];
+
+    // NOTE: get rid of map
+    // Option 1: Array.reduce
+    // Option 2: Array.filter => length
+    // Option 3: Array.forEach
 
     qzs.map((quiz) => {
       quiz.answers.map((ans) => {
@@ -136,6 +146,17 @@ export default function QuestionsPage() {
           />
         ))}
       </div>
+
+      {formState !== FORM_STATE.SUBMITTED && (
+        <button className="quiz-btn" onClick={handleSubmit}>
+          Check answers
+        </button>
+      )}
+      {formState === FORM_STATE.NOT_COMPLETE && (
+        <h3 className="quiz-warning">
+          Complete all quizzes to see the result!!!
+        </h3>
+      )}
       {formState === FORM_STATE.SUBMITTED && (
         <div className="quiz-result">
           <h3 className="quiz-score">
@@ -145,16 +166,6 @@ export default function QuestionsPage() {
             Play again
           </button>
         </div>
-      )}
-      {formState === FORM_STATE.NOT_COMPLETE && (
-        <h3 className="quiz-warning">
-          Complete all quizzes to see the result!!!
-        </h3>
-      )}
-      {formState !== FORM_STATE.SUBMITTED && (
-        <button className="quiz-btn" onClick={handleSubmit}>
-          Check answers
-        </button>
       )}
     </section>
   );
