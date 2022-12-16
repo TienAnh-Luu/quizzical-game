@@ -78,47 +78,13 @@ export default function QuestionsPage() {
   };
 
   const countQuizSolved = () => {
-    let count = 0;
     const qzs = [...quizzes];
-
-    // NOTE: get rid of map
-    // Option 1: Array.reduce
-    // Option 2: Array.filter => length
-    // Option 3: Array.forEach
-
-    qzs.map((quiz) => {
-      quiz.answers.map((ans) => {
-        if (ans.isChosen) {
-          count++;
-        }
-        return ans;
-      });
-      return quiz;
-    });
-
-    return count;
+    return qzs.filter(quiz => quiz.answers.filter(ans => ans.isChosen).length > 0).length
   };
 
   const countCorrectAnswers = () => {
-    let count = 0;
     const qzs = [...quizzes];
-
-    // NOTE: get rid of map
-    // Option 1: Array.reduce
-    // Option 2: Array.filter => length
-    // Option 3: Array.forEach
-
-    qzs.map((quiz) => {
-      quiz.answers.map((ans) => {
-        if (ans.isChosen && ans.isCorrect) {
-          count++;
-        }
-        return ans;
-      });
-      return quiz;
-    });
-
-    return count;
+    return qzs.filter(quiz => quiz.answers.filter(ans => ans.isChosen && ans.isCorrect).length > 0).length
   };
 
   const handleSubmit = () => {
