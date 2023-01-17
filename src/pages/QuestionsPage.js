@@ -110,29 +110,36 @@ export default function QuestionsPage() {
             handleAnswerClick={handleAnswerClick3}
             isSubmit={formState === FORM_STATE.SUBMITTED}
           />
-        ))}
+          ))}
       </div>
 
-      {formState !== FORM_STATE.SUBMITTED && (
-        <button className="quiz-btn" onClick={handleSubmit}>
-          Check answers
-        </button>
-      )}
       {formState === FORM_STATE.NOT_COMPLETE && (
         <h3 className="quiz-warning">
           Complete all quizzes to see the result!!!
         </h3>
       )}
+
       {formState === FORM_STATE.SUBMITTED && (
-        <div className="quiz-result">
-          <h3 className="quiz-score">
-            You scored {noCorrectAnswers}/{quizzes.length} correct answers
-          </h3>
-          <button className="quiz-playAgainBtn" onClick={handlePlayAgain}>
-            Play again
-          </button>
-        </div>
+        <h3 className="quiz-score">
+          You scored {noCorrectAnswers}/{quizzes.length} correct answers
+        </h3>
       )}
+
+      <div className='quiz-btns'>
+        {formState !== FORM_STATE.SUBMITTED && (
+          <button className="quiz-btn" onClick={handleSubmit}>
+            Check answers
+          </button>
+        )}
+        <button className="quiz-btn" onClick={handleSubmit}>
+            See History
+        </button>
+        {formState === FORM_STATE.SUBMITTED && (            
+            <button className="quiz-btn" onClick={handlePlayAgain}>
+              Play again
+            </button>
+        )}
+      </div>
     </section>
   );
 }
