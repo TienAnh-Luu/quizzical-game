@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles({
   answerButton: {
     display: 'flex',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     boxSizing: 'border-box',
@@ -18,6 +19,7 @@ const useStyles = createUseStyles({
     '&:hover': {
       backgroundColor: '#d6dbf5',
       border: 'none',
+      padding: '4.8px 16.8px',
     },
   },
   chosenAnswer: {
