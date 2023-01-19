@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import IntroPage from './pages/IntroPage';
 import QuestionsPage from './pages/QuestionsPage';
+import HistoryPage from './pages/HistoryPage';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<IntroPage />} />
           <Route path='/questions' element={<QuestionsPage />} />
+          <Route path='/history' element={<HistoryPage />} />
         </Routes>
       </BrowserRouter>
 
