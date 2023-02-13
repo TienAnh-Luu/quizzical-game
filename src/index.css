@@ -22,6 +22,15 @@ body {
   font-family: Karla, sans-serif;
 }
 
+
+
+
+
+/* -------- Intro Page ---------- */
+
+
+
+
 .intro-page {
   display: flex;
   flex-direction: column;
@@ -88,6 +97,15 @@ body {
 .intro-startBtn:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
 }
+
+
+
+
+
+/* ---------- Questions Page ------------- */
+
+
+
 
 .questions-page {
   display: flex;
@@ -183,4 +201,106 @@ body {
   font-style: italic;
   font-weight: 700;
   font-size: 16px;
+}
+
+
+
+/* --------- History Page -------------- */
+
+
+
+
+.history-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+
+.hd-link {
+  width: 45%;
+  margin-bottom: 25px;
+  text-decoration: none;
+}
+
+.history-details {
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.history-details:hover {
+  background-color: rgb(235, 230, 230);
+}
+
+.hd-leftSection {
+  display: flex;
+}
+
+.hd-info {
+  margin-left: 12px;
+}
+
+.hd-header {
+  font-size: 11px;
+  color: #a2a2a2;
+  margin-bottom: 6px;
+}
+
+.hd-name {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: black;
+}
+
+.hd-correctionContainer,
+.hd-timeContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.hd-correctionIcon,
+.hd-timeIcon {
+  margin-right: 4px;
+}
+
+.hd-correctionIcon {
+  color: green;
+}
+
+.hd-correction,
+.hd-time {
+  color: #a2a2a2;
+  font-size: 12px;
+}
+
+.hd-image {
+  width: 50px;
+  height: 50px;
+}
+
+.hd-rightSection {
+  padding: 4px 6px;
+  height: fit-content;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+.hd-rightSection:hover {
+  background-color: #a5a5a5;
+}
+
+.error-page {
+  margin-top: 50px;
+  width: 60%;
+  object-fit: cover;
 }

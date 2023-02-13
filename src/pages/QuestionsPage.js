@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 import Question from '../components/Question';
 import { shuffle } from '../utils/arrayHelpers';
@@ -27,7 +28,7 @@ export default function QuestionsPage() {
   const [quizzes, setQuizzes] = React.useState([]);
 
   const [formState, setFormState] = React.useState(FORM_STATE.INITIAL);
-  const [noCorrectAnswers, setNoCorrectAnswers] = React.useState(0);
+  // const [noCorrectAnswers, setNoCorrectAnswers] = React.useState(0);
 
   const getShuffleAnswers = useCallback((q) => {
     const anss = [...q.incorrect_answers, q.correct_answer];
@@ -91,8 +92,19 @@ export default function QuestionsPage() {
     if (countQuizSolved() < quizzes.length) {
       setFormState(FORM_STATE.NOT_COMPLETE);
     } else {
+      const correctAns = countCorrectAnswers();
+      const currentDate = new Date().toJSON().slice(0, 10);
+
+      let history = JSON.parse(localStorage.getItem("history")) || [];
+      history.push({
+        name: 'Sport Review',
+        score: correctAns,
+        noQuiz: quizzes.length,
+        date: currentDate
+      });
+      localStorage.setItem("history", JSON.stringify(history));
+
       setFormState(FORM_STATE.SUBMITTED);
-      setNoCorrectAnswers(countCorrectAnswers());
     }
   };
 
@@ -121,7 +133,7 @@ export default function QuestionsPage() {
 
       {formState === FORM_STATE.SUBMITTED && (
         <h3 className="quiz-score">
-          You scored {noCorrectAnswers}/{quizzes.length} correct answers
+          You scored {countCorrectAnswers()}/{quizzes.length} correct answers
         </h3>
       )}
 
@@ -131,9 +143,11 @@ export default function QuestionsPage() {
             Check answers
           </button>
         )}
-        <button className="quiz-btn" onClick={handleSubmit}>
-            See History
-        </button>
+        <Link to='/history'>
+          <button className="quiz-btn" onClick={handleSubmit}>
+              See History
+          </button>
+        </Link>
         {formState === FORM_STATE.SUBMITTED && (            
             <button className="quiz-btn" onClick={handlePlayAgain}>
               Play again
