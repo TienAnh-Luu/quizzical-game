@@ -19,4 +19,6 @@ const shuffle = (array) => {
   return array;
 };
 
-export { shuffle };
+const deleteById = (id, array) => array.filter((item) => item.id !== id);
+
+export { shuffle, deleteById };
