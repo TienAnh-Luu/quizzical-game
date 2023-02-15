@@ -96,6 +96,7 @@ export default function QuestionsPage() {
   const handleSubmit = () => {
     if (countQuizSolved() < quizzes.length) {
       setFormState(FORM_STATE.NOT_COMPLETE);
+      console.log("Not complete");
     } else {
       const correctAns = countCorrectAnswers();
       const currentDate = new Date().toJSON().slice(0, 10);
@@ -107,6 +108,7 @@ export default function QuestionsPage() {
         score: correctAns,
         noQuiz: quizzes.length,
         date: currentDate,
+        details: quizzes,
       });
       localStorage.setItem("history", JSON.stringify(history));
 
@@ -150,7 +152,7 @@ export default function QuestionsPage() {
           </button>
         )}
         <Link to='/history'>
-          <button className='quiz-btn' onClick={handleSubmit}>
+          <button className='quiz-btn' onClick={() => {}}>
             See History
           </button>
         </Link>

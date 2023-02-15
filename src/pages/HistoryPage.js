@@ -1,6 +1,5 @@
 import { React, useEffect, useState } from "react";
-import HistoryDetails from "../components/HistoryDetails";
-import { Link } from "react-router-dom";
+import HistoryItem from "../components/HistoryItem";
 import { deleteById } from "../utils/arrayHelpers";
 
 export default function HistoryPage() {
@@ -11,10 +10,7 @@ export default function HistoryPage() {
   }, []);
 
   const deleteHandler = (id) => {
-    console.log(history);
-    console.log("/n/n");
     const newHistory = deleteById(id, history);
-    console.log(newHistory);
     localStorage.setItem("history", JSON.stringify(newHistory));
     setHistory(newHistory);
   };
@@ -23,15 +19,14 @@ export default function HistoryPage() {
     <section className='history-page'>
       {history && history.length > 0 ? (
         history.map((hItem) => (
-          <Link className='hd-link'>
-            <HistoryDetails
-              name={hItem.name}
-              score={hItem.score}
-              noQuiz={hItem.noQuiz}
-              date={hItem.date}
-              deleteHandler={() => deleteHandler(hItem.id)}
-            />
-          </Link>
+          <HistoryItem
+            id={hItem.id}
+            name={hItem.name}
+            score={hItem.score}
+            noQuiz={hItem.noQuiz}
+            date={hItem.date}
+            deleteHandler={() => deleteHandler(hItem.id)}
+          />
         ))
       ) : (
         <img

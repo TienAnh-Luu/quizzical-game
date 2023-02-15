@@ -1,14 +1,14 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -22,14 +22,7 @@ body {
   font-family: Karla, sans-serif;
 }
 
-
-
-
-
 /* -------- Intro Page ---------- */
-
-
-
 
 .intro-page {
   display: flex;
@@ -65,7 +58,7 @@ body {
 }
 
 .intro-desc {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
@@ -78,7 +71,7 @@ body {
   border: none;
   background-color: #4d5b9e;
   border-radius: 15px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
@@ -98,14 +91,7 @@ body {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
 }
 
-
-
-
-
 /* ---------- Questions Page ------------- */
-
-
-
 
 .questions-page {
   display: flex;
@@ -128,7 +114,7 @@ body {
 }
 
 .question {
-  font-family: 'Karla';
+  font-family: "Karla";
   font-weight: 700;
   font-size: 16px;
   line-height: 19px;
@@ -176,7 +162,7 @@ body {
   border: none;
   width: 120px;
   height: 35px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 600;
   font-size: 12px;
   line-height: 12px;
@@ -187,7 +173,7 @@ body {
   margin-right: 12px;
 }
 
-.quiz-warning, 
+.quiz-warning,
 .quiz-score {
   margin-bottom: 15px;
 }
@@ -203,12 +189,7 @@ body {
   font-size: 16px;
 }
 
-
-
 /* --------- History Page -------------- */
-
-
-
 
 .history-page {
   display: flex;
@@ -219,13 +200,9 @@ body {
   margin-bottom: 25px;
 }
 
-.hd-link {
+.history-item {
   width: 45%;
-  margin-bottom: 25px;
-  text-decoration: none;
-}
-
-.history-details {
+  margin-bottom: 28px;
   background-color: #f0f0f0;
   display: flex;
   flex-direction: row;
@@ -235,14 +212,17 @@ body {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   cursor: pointer;
   transition: background-color 0.15s;
+  position: relative;
 }
 
-.history-details:hover {
+.history-item:hover {
   background-color: rgb(235, 230, 230);
 }
 
-.hd-leftSection {
+.hd-mainSection {
+  flex: 1;
   display: flex;
+  text-decoration: none;
 }
 
 .hd-info {
@@ -293,6 +273,9 @@ body {
   height: fit-content;
   border-radius: 4px;
   transition: background-color 0.15s;
+  position: absolute;
+  top: 7px;
+  right: 9px;
 }
 
 .hd-rightSection:hover {
@@ -303,4 +286,10 @@ body {
   margin-top: 50px;
   width: 60%;
   object-fit: cover;
+}
+
+.history-details-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
