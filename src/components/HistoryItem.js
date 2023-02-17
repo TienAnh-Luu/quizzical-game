@@ -18,7 +18,7 @@ export default function HistoryItem({
       ></i>
       <Link
         className='hd-mainSection'
-        to='/history-details'
+        to={`/history-details/${id}`}
         // state={{ id: id }}
       >
         <img src='../images/ball.png' alt='png' className='hd-image' />

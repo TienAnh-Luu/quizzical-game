@@ -13,7 +13,7 @@ export default function App() {
           <Route path='/' element={<IntroPage />} />
           <Route path='/questions' element={<QuestionsPage />} />
           <Route path='/history' element={<HistoryPage />} />
-          <Route path='/history-details' element={<HistoryDetailsPage />} />
+          <Route path='/history-details/:id' element={<HistoryDetailsPage />} />
         </Routes>
       </BrowserRouter>
 

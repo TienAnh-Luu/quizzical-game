@@ -1,37 +1,41 @@
-import React from 'react';
-import { createUseStyles } from 'react-jss';
+import React from "react";
+import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
   answerButton: {
-    display: 'flex',
+    display: "flex",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxSizing: 'border-box',
+    justifyContent: "center",
+    alignItems: "center",
+    boxSizing: "border-box",
 
-    borderRadius: '8px',
-    marginRight: '13px',
-    padding: '4px 16px',
+    borderRadius: "8px",
+    marginRight: "13px",
+    padding: "4px 16px",
 
-    transition: 'border 0.15s, background-color 0.15s',
-    border: '0.8px solid #4d5b9e',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#d6dbf5',
-      border: 'none',
-      padding: '4.8px 16.8px',
+    transition: "border 0.15s, background-color 0.15s",
+    border: "0.8px solid #4d5b9e",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#d6dbf5",
+      border: "none",
+      padding: "4.8px 16.8px",
     },
   },
   chosenAnswer: {
-    backgroundColor: '#d6dbf5',
+    backgroundColor: "#d6dbf5",
   },
   correctAnswer: {
-    backgroundColor: '#94d7a2',
-    border: 'none',
+    backgroundColor: "#94d7a2",
+    border: "none",
+    // cursor: "default",
+    // "&:hover": {},
   },
   incorrectAnswer: {
-    backgroundColor: '#f8bcbc',
-    border: 'none',
+    backgroundColor: "#f8bcbc",
+    border: "none",
+    // cursor: "default",
+    // "&:hover": {},
   },
 });
 
@@ -55,9 +59,9 @@ export default function Question({
 }) {
   const classes = useStyles();
   return (
-    <div className="quiz">
-      <p className="question">{quiz.question}</p>
-      <div className="answers">
+    <div className='quiz'>
+      <p className='question'>{quiz.question}</p>
+      <div className='answers'>
         {quiz.answers.map((ans) => (
           <div
             key={ans.value}
