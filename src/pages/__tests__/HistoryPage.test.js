@@ -30,7 +30,7 @@ describe("history page", () => {
         date: "2023-02-15",
       },
     ];
-    localStorage.setItem("history", JSON.stringify(data));
+    localStorage.setItem("quizHistories", JSON.stringify(data));
     render(<HistoryPage />, { wrapper: BrowserRouter });
     expect(screen.getByText("Sport Review")).toBeVisible();
     expect(screen.getByText("Sport abcxyz")).toBeVisible();
@@ -53,7 +53,7 @@ describe("history page", () => {
         date: "2023-02-15",
       },
     ];
-    localStorage.setItem("history", JSON.stringify(data));
+    localStorage.setItem("quizHistories", JSON.stringify(data));
     render(<HistoryPage />, { wrapper: BrowserRouter });
     fireEvent.click(screen.getByTestId("1676447864951")); // click 'delete' button
     expect(screen.queryByText("Sport Review")).not.toBeInTheDocument();

@@ -101,7 +101,7 @@ export default function QuestionsPage() {
       const correctAns = countCorrectAnswers();
       const currentDate = new Date().toJSON().slice(0, 10);
 
-      let history = JSON.parse(localStorage.getItem("history")) || [];
+      let history = JSON.parse(localStorage.getItem("quizHistories")) || [];
       history.push({
         id: Date.now(),
         name: "Sport Review",
@@ -110,7 +110,7 @@ export default function QuestionsPage() {
         date: currentDate,
         details: quizzes,
       });
-      localStorage.setItem("history", JSON.stringify(history));
+      localStorage.setItem("quizHistories", JSON.stringify(history));
 
       setFormState(FORM_STATE.SUBMITTED);
     }

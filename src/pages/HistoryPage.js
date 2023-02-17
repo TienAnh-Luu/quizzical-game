@@ -4,21 +4,21 @@ import { deleteById } from "../utils/arrayHelpers";
 
 export default function HistoryPage() {
   // [{name: 'name', score: 2, noQuiz: 5, date: '27/01/2023'}, {...}]
-  const [history, setHistory] = useState([]);
+  const [quizHistories, setQuizHistories] = useState([]);
   useEffect(() => {
-    setHistory(JSON.parse(localStorage.getItem("history")));
+    setQuizHistories(JSON.parse(localStorage.getItem("quizHistories")));
   }, []);
 
   const deleteHandler = (id) => {
-    const newHistory = deleteById(id, history);
-    localStorage.setItem("history", JSON.stringify(newHistory));
-    setHistory(newHistory);
+    const newQuizHistories = deleteById(id, quizHistories);
+    localStorage.setItem("quizHistories", JSON.stringify(newQuizHistories));
+    setQuizHistories(newQuizHistories);
   };
 
   return (
-    <section className='history-page'>
-      {history && history.length > 0 ? (
-        history.map((hItem) => (
+    <section className='quiz-history-page'>
+      {quizHistories && quizHistories.length > 0 ? (
+        quizHistories.map((hItem) => (
           <HistoryItem
             key={hItem.id}
             id={hItem.id}

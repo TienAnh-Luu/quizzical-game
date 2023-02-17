@@ -14,6 +14,7 @@ export default function HistoryItem({
       <i
         className='fa-solid fa-xmark hd-rightSection'
         onClick={deleteHandler}
+        data-testid={id}
       ></i>
       <Link
         className='hd-mainSection'

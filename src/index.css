@@ -191,7 +191,7 @@ body {
 
 /* --------- History Page -------------- */
 
-.history-page {
+.quiz-history-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
