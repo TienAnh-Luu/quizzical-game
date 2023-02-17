@@ -20,6 +20,7 @@ export default function HistoryPage() {
       {history && history.length > 0 ? (
         history.map((hItem) => (
           <HistoryItem
+            key={hItem.id}
             id={hItem.id}
             name={hItem.name}
             score={hItem.score}
