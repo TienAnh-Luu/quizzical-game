@@ -1,6 +1,7 @@
 import React from "react";
 import Question from "../components/Question";
 import { useParams } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 export default function HistoryDetailsPage() {
   const { id } = useParams();
@@ -23,6 +24,7 @@ export default function HistoryDetailsPage() {
           />
         ))}
       </div>
+      <BackButton path='/history' />
     </section>
   );
 }
