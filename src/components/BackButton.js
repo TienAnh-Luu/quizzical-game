@@ -23,7 +23,10 @@ const BackButton = ({ path }) => {
   const classes = useStyles();
   return (
     <Link to={path}>
-      <i className={`fa-solid fa-arrow-left ${classes.backButton}`}></i>
+      <i
+        className={`fa-solid fa-arrow-left ${classes.backButton}`}
+        data-testid='back-button'
+      ></i>
     </Link>
   );
 };
