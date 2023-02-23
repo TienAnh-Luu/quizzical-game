@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createUseStyles } from "react-jss";
+import BackButton from "../components/BackButton";
 
 const useStyles = createUseStyles({
   formStyle: {
@@ -73,6 +74,7 @@ export default function FormPage() {
 
   return (
     <form action='' className={classes.formStyle}>
+      <BackButton path='/' />
       <h2 className={classes.formHeading}>Specify your questions</h2>
       <label htmlFor='trivia_amount' className={classes.formLabel}>
         Number of Questions:

@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from "react";
+import BackButton from "../components/BackButton";
 import HistoryItem from "../components/HistoryItem";
 import { deleteById } from "../utils/arrayHelpers";
 
@@ -36,6 +37,7 @@ export default function HistoryPage() {
           className='error-page'
         />
       )}
+      <BackButton path='/form' />
     </section>
   );
 }

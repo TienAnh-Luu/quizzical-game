@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 import Question from "../components/Question";
 import { shuffle } from "../utils/arrayHelpers";
@@ -188,6 +189,8 @@ export default function QuestionsPage() {
           </Link>
         )}
       </div>
+
+      <BackButton path='/form' />
     </section>
   );
 }

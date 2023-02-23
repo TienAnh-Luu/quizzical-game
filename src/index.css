@@ -99,6 +99,7 @@ body {
   align-items: center;
   padding: 0 75px;
   margin-bottom: 25px;
+  position: relative;
 }
 
 .quizzes {
@@ -125,24 +126,6 @@ body {
 .answers {
   display: flex;
 }
-/* 
-.answer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  border: 0.8px solid #4d5b9e;
-  border-radius: 8px;
-  margin-right: 13px;
-  padding: 4px 16px;
-  cursor: pointer;
-  transition: border 0.15s, background-color 0.15s;
-}
-
-.answer:hover {
-  border: none;
-  background-color: #d6dbf5 !important;
-} */
 
 .answer:active {
   background-color: #a3aee6;
