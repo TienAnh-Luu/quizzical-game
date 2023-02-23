@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import IntroPage from "./pages/IntroPage";
+import FormPage from "./pages/FormPage";
 import QuestionsPage from "./pages/QuestionsPage";
 import HistoryPage from "./pages/HistoryPage";
 import HistoryDetailsPage from "./pages/HistoryDetailsPage";
@@ -11,7 +12,11 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<IntroPage />} />
-          <Route path='/questions' element={<QuestionsPage />} />
+          <Route path='/form' element={<FormPage />} />
+          <Route
+            path='/questions/:amount/:category/:difficulty'
+            element={<QuestionsPage />}
+          />
           <Route path='/history' element={<HistoryPage />} />
           <Route path='/history-details/:id' element={<HistoryDetailsPage />} />
         </Routes>

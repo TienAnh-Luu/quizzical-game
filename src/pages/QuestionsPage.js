@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Question from "../components/Question";
 import { shuffle } from "../utils/arrayHelpers";
@@ -8,6 +8,34 @@ const FORM_STATE = {
   INITIAL: 0,
   NOT_COMPLETE: -1,
   SUBMITTED: 1,
+};
+
+const CATEGORY_NAME = {
+  any: "General Knowledge Review",
+  9: "General Knowledge Review",
+  10: "Books Knowledge Review",
+  11: "Film Knowledge Review",
+  12: "Music Knowledge Review",
+  13: "Musical & Theatres Review",
+  14: "Television Knowledge Review",
+  15: "Video Games Knowledge Review",
+  16: "Board Games Knowledge Review",
+  17: "Science & Nature Knowledge Review",
+  18: "Computers Knowledge Review",
+  19: "Mathematics Knowledge Review",
+  20: "Mythology Knowledge Review",
+  21: "Sports Knowledge Review",
+  22: "Geography Knowledge Review",
+  23: "History Knowledge Review",
+  24: "Politics Knowledge Review",
+  25: "Art Knowledge Review",
+  26: "Celebrities Knowledge Review",
+  27: "Animals Knowledge Review",
+  28: "Vehicles Knowledge Review",
+  29: "Comics Knowledge Review",
+  30: "Gadgets Knowledge Review",
+  31: "Anime & Manga Knowledge Review",
+  32: "Cartoon & Animations Knowledge Review",
 };
 
 export default function QuestionsPage() {
@@ -28,7 +56,7 @@ export default function QuestionsPage() {
   const [quizzes, setQuizzes] = React.useState([]);
 
   const [formState, setFormState] = React.useState(FORM_STATE.INITIAL);
-  // const [noCorrectAnswers, setNoCorrectAnswers] = React.useState(0);
+  const { amount, category, difficulty } = useParams();
 
   const getShuffleAnswers = useCallback((q) => {
     const anss = [...q.incorrect_answers, q.correct_answer];
@@ -45,7 +73,8 @@ export default function QuestionsPage() {
   // This block of code only run when the App start or play again
   // It takes data from the API, then give them to quizzes state
   React.useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=5&category=21&type=multiple")
+    const url = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    fetch(url)
       .then((res) => res.json())
       .then((dat) => {
         setQuizzes(
@@ -54,8 +83,9 @@ export default function QuestionsPage() {
             answers: getShuffleAnswers(q),
           }))
         );
-      });
-  }, [getShuffleAnswers]);
+      })
+      .catch(console.log("Cannot connect to API"));
+  }, [getShuffleAnswers, amount, category, difficulty]);
 
   // leverage Javascript closure: (question, chosenAnsValue) => () => {}
   const handleAnswerClick3 = (question, chosenAnsValue) => () => {
@@ -104,7 +134,7 @@ export default function QuestionsPage() {
       let history = JSON.parse(localStorage.getItem("quizHistories")) || [];
       history.push({
         id: Date.now(),
-        name: "Sport Review",
+        name: CATEGORY_NAME[category],
         score: correctAns,
         noQuiz: quizzes.length,
         date: currentDate,
@@ -114,10 +144,6 @@ export default function QuestionsPage() {
 
       setFormState(FORM_STATE.SUBMITTED);
     }
-  };
-
-  const handlePlayAgain = () => {
-    window.location.reload();
   };
 
   return (
@@ -157,9 +183,9 @@ export default function QuestionsPage() {
           </button>
         </Link>
         {formState === FORM_STATE.SUBMITTED && (
-          <button className='quiz-btn' onClick={handlePlayAgain}>
-            Play again
-          </button>
+          <Link to={"/form"}>
+            <button className='quiz-btn'>Play again</button>
+          </Link>
         )}
       </div>
     </section>
