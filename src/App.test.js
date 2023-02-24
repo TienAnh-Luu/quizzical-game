@@ -25,4 +25,10 @@ describe("App", () => {
 
     // expect(screen.getByText('History page')).toBeVisible();
   });
+
+  test("renders Form page when path is /form", () => {
+    renderWithRouter(<App />, { route: "/form" });
+
+    expect(screen.getByText("Specify your questions")).toBeVisible();
+  });
 });
