@@ -50,13 +50,7 @@ const answerStateClass = (classes, ans, isSubmit) => {
   }
 };
 
-export default function Question({
-  quiz,
-  handleAnswerClick,
-  handleAnswerMouseEnter,
-  handleAnswerMouseLeave,
-  isSubmit,
-}) {
+export default function Question({ quiz, handleAnswerClick, isSubmit }) {
   const classes = useStyles();
   return (
     <div className='quiz'>
@@ -71,8 +65,6 @@ export default function Question({
               isSubmit
             )} `}
             onClick={handleAnswerClick(quiz.question, ans.value)}
-            onMouseEnter={handleAnswerMouseEnter}
-            onMouseLeave={(event) => handleAnswerMouseLeave(event, ans)}
           >
             {ans.value}
           </div>

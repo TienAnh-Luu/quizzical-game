@@ -74,7 +74,9 @@ export default function QuestionsPage() {
   // This block of code only run when the App start or play again
   // It takes data from the API, then give them to quizzes state
   React.useEffect(() => {
-    const url = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    const urlCate = category === "any" ? "" : `&category=${category}`;
+    const urlDiff = difficulty === "any" ? "" : `&difficulty=${difficulty}`;
+    const url = `https://opentdb.com/api.php?amount=${amount}${urlCate}${urlDiff}&type=multiple`;
     fetch(url)
       .then((res) => res.json())
       .then((dat) => {

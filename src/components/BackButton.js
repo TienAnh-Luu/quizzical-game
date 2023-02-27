@@ -4,7 +4,7 @@ import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
   backButton: {
-    position: "absolute",
+    position: "fixed",
     left: "40px",
     top: "15px",
     padding: "18px",
