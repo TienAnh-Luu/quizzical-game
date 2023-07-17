@@ -69,6 +69,7 @@ export default function FormPage() {
   const classes = useStyles();
 
   const [amount, setAmount] = useState(5);
+  const [timeAmount, setTimeAmount] = useState(0);
   const [category, setCategory] = useState("any");
   const [difficulty, setDifficulty] = useState("any");
 
@@ -313,7 +314,22 @@ export default function FormPage() {
           Hard
         </option>
       </select>
-      <Link to={`/questions/${amount}/${category}/${difficulty}`}>
+      <label htmlFor='time_amount' className={classes.formLabel}>
+        Number of Questions:
+      </label>
+      <input
+        type='number'
+        name='time_amount'
+        id='time_amount'
+        className={classes.formControl}
+        data-testid='time-amount-input'
+        min={0}
+        max={300}
+        step={20}
+        defaultValue={0}
+        onChange={(e) => setTimeAmount(e.target.value)}
+      />
+      <Link to={`/questions/${amount}/${category}/${difficulty}/${timeAmount}`}>
         <button className={classes.playButton}>Let's Play</button>
       </Link>
     </form>

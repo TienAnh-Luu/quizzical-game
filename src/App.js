@@ -14,7 +14,7 @@ export default function App() {
           <Route path='/' element={<IntroPage />} />
           <Route path='/form' element={<FormPage />} />
           <Route
-            path='/questions/:amount/:category/:difficulty'
+            path='/questions/:amount/:category/:difficulty/:time'
             element={<QuestionsPage />}
           />
           <Route path='/history' element={<HistoryPage />} />

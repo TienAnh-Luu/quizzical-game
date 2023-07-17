@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
-
+import Timer from "../components/Timer";
 import Question from "../components/Question";
 import { shuffle } from "../utils/arrayHelpers";
 
@@ -39,6 +39,9 @@ const CATEGORY_NAME = {
   32: "Cartoon & Animations Knowledge Review",
 };
 
+// Start with an initial value of 20 seconds
+const TIME_LIMIT = 20;
+
 export default function QuestionsPage() {
   /**
    * This is how quizzes state looks like:
@@ -55,9 +58,9 @@ export default function QuestionsPage() {
    * }
    */
   const [quizzes, setQuizzes] = React.useState([]);
-
   const [formState, setFormState] = React.useState(FORM_STATE.INITIAL);
-  const { amount, category, difficulty } = useParams();
+  const { amount, category, difficulty, time } = useParams();
+  const [timeLeft, setTimeLeft] = React.useState(time);
 
   const getShuffleAnswers = useCallback((q) => {
     const anss = [...q.incorrect_answers, q.correct_answer];
@@ -89,6 +92,18 @@ export default function QuestionsPage() {
       })
       .catch(console.log("Cannot connect to API"));
   }, [getShuffleAnswers, amount, category, difficulty]);
+
+  React.useEffect(() => {
+    if (timeLeft <= 0 || formState === FORM_STATE.SUBMITTED) return;
+
+    // save intervalId to clear the interval when the component re-renders
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    // clear interval on re-render to avoid memory leaks
+    return () => clearInterval(intervalId);
+  }, [timeLeft, formState]);
 
   // leverage Javascript closure: (question, chosenAnsValue) => () => {}
   const handleAnswerClick3 = (question, chosenAnsValue) => () => {
@@ -127,7 +142,7 @@ export default function QuestionsPage() {
   };
 
   const handleSubmit = () => {
-    if (countQuizSolved() < quizzes.length) {
+    if (countQuizSolved() < quizzes.length && timeLeft > 0) {
       setFormState(FORM_STATE.NOT_COMPLETE);
       console.log("Not complete");
     } else {
@@ -148,6 +163,10 @@ export default function QuestionsPage() {
       setFormState(FORM_STATE.SUBMITTED);
     }
   };
+
+  if (formState !== FORM_STATE.SUBMITTED && timeLeft <= 0) {
+    setFormState(FORM_STATE.SUBMITTED);
+  }
 
   return (
     <section className='questions-page' style={{ display: "flex" }}>
@@ -191,6 +210,8 @@ export default function QuestionsPage() {
           </Link>
         )}
       </div>
+
+      {time > 0 && <Timer timeLeft={timeLeft} initTime={TIME_LIMIT} />}
 
       <BackButton path='/form' />
     </section>
